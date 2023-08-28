@@ -1,0 +1,114 @@
+default_stages: [ commit, merge-commit, push, prepare-commit-msg, commit-msg,
+                  post-checkout, post-commit, post-merge, post-rewrite ]
+exclude: |
+  (?x)(
+  LICENSE|
+  \.(html|csv|svg)$
+  )
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files  # Prevent giant files from being committed.
+      - id: check-ast  # Simply check whether files parse as valid python.
+      - id: check-case-conflict  # Check for files with names that would conflict on a
+                                 # case-insensitive filesystem like macOS HFS+ or
+                                 # Windows FAT.
+      - id: check-merge-conflict # Check for files that contain merge conflict strings.
+      - id: check-toml  # checks toml files for parseable syntax.
+      - id: check-yaml  # checks yaml files for parseable syntax.
+      - id: destroyed-symlinks  # Detects symlinks which are changed to regular files
+                                # with a content of a path which that symlink was
+                                # pointing to. This usually happens on Windows when a
+                                # user clones a repository that has symlinks, but they
+                                # do not have the permission to create symlinks.
+      - id: detect-private-key  # Checks for the existence of private keys.
+      - id: end-of-file-fixer  # Makes sure files end in a newline and only a newline.
+      - id: mixed-line-ending  # Replaces or checks mixed line ending.
+      - id: trailing-whitespace  # Trims trailing whitespace.
+
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black-jupyter
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear==23.7.10
+          - flake8-comprehensions==3.14.0
+        args:
+          - --max-line-length=88
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: isort (python)
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.1
+    hooks:
+    -   id: mypy
+  # - repo: local
+  #   hooks:
+  #     - id: mypy
+  #       name: mypy
+  #       entry: mypy .
+  #       language: system
+  #       pass_filenames: false
+  #       types:
+  #         - python
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.10.1
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py39-plus
+
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.6.1
+    hooks:
+      - id: nbstripout
+        args: ['--extra-keys=cell.metadata.pycharm']
+        stages:
+          - manual
+      - id: nbstripout
+        name: nbstripout pycharm metadata
+        alias: nbstripout-pycharm
+        args:
+          - '--extra-keys=cell.metadata.pycharm'
+          - --keep-output
+          - --keep-count
+
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.7.0
+    hooks:
+      - id: nbqa-check-ast
+      - id: nbqa-flake8
+        additional_dependencies:
+          - flake8==6.1.0
+          - flake8-bugbear==23.7.10
+          - flake8-comprehensions==3.14.0
+        args:
+          - '--extend-ignore=E402'  # module level import not at top of file
+          - --max-line-length=88
+      - id: nbqa-isort
+        additional_dependencies:
+          - isort==5.12.0
+      - id: nbqa-mypy
+        additional_dependencies:
+          - mypy==1.5.1
+      - id: nbqa-pyupgrade
+        additional_dependencies:
+          - pyupgrade==3.10.1
+        args:
+          - --py39-plus  # Synchronize with args in regular hook
+  - repo: https://github.com/python-jsonschema/check-jsonschema.git
+    rev: 0.26.1
+    hooks:
+      - id: check-github-actions
+      - id: check-github-workflows

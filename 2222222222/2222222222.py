@@ -19,15 +19,12 @@ for trial in tqdm(itertools.permutations(string), total=math.factorial(len(strin
     if trial in already_tried:
         continue
     trial_str = "".join(trial)
-    if "**" in trial_str:
+    if "**" in trial_str or trial_str.startswith("*") or trial_str.endswith("*"):
         continue
     already_tried.append(trial)
-    try:
-        result = eval(trial_str)
-        if result > max_result:
-            max_result = result
-            max_expr = trial_str
-    except SyntaxError:
-        continue
+    result = eval(trial_str)
+    if result > max_result:
+        max_result = result
+        max_expr = trial_str
 
 print(f"{max_expr} = {max_result:,}")

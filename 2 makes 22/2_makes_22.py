@@ -25,6 +25,8 @@ for operators in itertools.product(allowed_operators, repeat=NUM_REPEATS - 1):
             result_str += f"{NUM_TO_USE}) {operator} "
             result_str = "(" + result_str
         result_str += f"{NUM_TO_USE} = {DESIRED_RESULT}"
+        # Remove one pair of extra parentheses
+        result_str = result_str.replace(f"({NUM_TO_USE})", f"{NUM_TO_USE}")
         print(result_str)
         print()
     count += 1

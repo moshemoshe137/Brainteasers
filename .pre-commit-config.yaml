@@ -52,15 +52,6 @@ repos:
     rev: v1.5.1
     hooks:
     -   id: mypy
-  # - repo: local
-  #   hooks:
-  #     - id: mypy
-  #       name: mypy
-  #       entry: mypy .
-  #       language: system
-  #       pass_filenames: false
-  #       types:
-  #         - python
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.10.1
@@ -112,3 +103,16 @@ repos:
     hooks:
       - id: check-github-actions
       - id: check-github-workflows
+
+  - repo: 'https://github.com/executablebooks/mdformat'
+    rev: 0.7.17
+    hooks:
+      - id: mdformat  # Mdformat is an opinionated Markdown formatter that can be used
+                      # to enforce a consistent style in Markdown files.
+        additional_dependencies:
+          # For full GitHub support
+          - mdformat-gfm
+          - mdformat-frontmatter
+          - mdformat-footnote
+        args:
+          - '--wrap=88'

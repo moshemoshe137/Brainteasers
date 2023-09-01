@@ -1,6 +1,7 @@
 Let’s consider a string consisting of 10 characters “2”: string = “2222222222”
 
-This computing challenge consists of writing an algorithm to work out the largest number we can create by inserting 2 multiplication operators (*) anywhere within this string.
+This computing challenge consists of writing an algorithm to work out the largest number
+we can create by inserting 2 multiplication operators (\*) anywhere within this string.
 
 For instance:
 
